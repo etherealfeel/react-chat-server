@@ -17,6 +17,19 @@ const io = new Server(server, {
   },
 });
 
+io.on("connection", (socket) => {
+  socket.on("join", ({ username, room }) => {
+    socket.join(room);
+
+    socket.emit("message", {
+      data: { user: { username: "Admin"}, message: `greetings ${username}`}
+    })
+  });
+  io.on("disconnect", () => {
+    console.log("Disconnected");
+  });
+});
+
 server.listen(4000, () => {
   console.log("server is running at port 4000");
 });
